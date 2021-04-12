@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="user11Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="gender">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="users" Relationship="Self.FK_users_gender" FromRole="gender" ToRole="users" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FristName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Patronimic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="gender1" Relationship="Self.FK_users_gender" FromRole="users" ToRole="gender" />
+    <Property Name="Role" Type="Int32" Nullable="false" />
+    <Property Name="Country" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Country1" Relationship="user11Model.FK_users_Country" FromRole="users" ToRole="Country" />
+    <NavigationProperty Name="Role1" Relationship="user11Model.FK_users_Role" FromRole="users" ToRole="Role" />
+  </EntityType>
+  <Association Name="FK_users_gender">
+    <End Role="gender" Type="Self.gender" Multiplicity="1" />
+    <End Role="users" Type="Self.users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="gender">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="users">
+        <PropertyRef Name="Gender" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="user11Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="gender" EntityType="Self.gender" />
+    <EntitySet Name="users" EntityType="Self.users" />
+    <AssociationSet Name="FK_users_gender" Association="Self.FK_users_gender">
+      <End Role="gender" EntitySet="gender" />
+      <End Role="users" EntitySet="users" />
+    </AssociationSet>
+    <EntitySet Name="Country" EntityType="user11Model.Country" />
+    <EntitySet Name="Role" EntityType="user11Model.Role" />
+    <AssociationSet Name="FK_users_Country" Association="user11Model.FK_users_Country">
+      <End Role="Country" EntitySet="Country" />
+      <End Role="users" EntitySet="users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_users_Role" Association="user11Model.FK_users_Role">
+      <End Role="Role" EntitySet="Role" />
+      <End Role="users" EntitySet="users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Country">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="users" Relationship="user11Model.FK_users_Country" FromRole="Country" ToRole="users" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="users" Relationship="user11Model.FK_users_Role" FromRole="Role" ToRole="users" />
+  </EntityType>
+  <Association Name="FK_users_Country">
+    <End Type="user11Model.Country" Role="Country" Multiplicity="1" />
+    <End Type="user11Model.users" Role="users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="users">
+        <PropertyRef Name="Country" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_users_Role">
+    <End Type="user11Model.Role" Role="Role" Multiplicity="1" />
+    <End Type="user11Model.users" Role="users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="users">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
